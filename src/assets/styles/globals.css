@@ -1,0 +1,12 @@
+html,
+body,
+#root,
+.app,
+.content {
+    width: 100%;
+    min-height: 100vh;
+}
+
+.app {
+    position: relative;
+}
