@@ -1,47 +1,45 @@
-import { useState } from "react";
 import { Outlet, Navigate } from "react-router-dom";
-import { Box, useTheme } from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 // components
 import DashboardNavbar from "../components/Navbars/dashboard/DashboardNavbar";
 import DashboardSidebar from "../components/Navbars/dashboard/DashboardSidebar";
+import ToolbarSpacer from "../components/Spacers/ToolbarSpacer";
+
+// context
+import { DashboardProvider } from "../contexts/DashboardContextProvider";
 
 // hooks
 import useAuth from "../hooks/useAuth";
-import ToolbarSpacer from "../components/Spacers/ToolbarSpacer";
+import useThemeMode from "../hooks/useThemeMode";
 
 const DashboardLayout = () => {
-    const { user } = useAuth();
-    const [openDrawer, setOpenDrawer] = useState(true);
     const theme = useTheme();
-    const DRAWER_WIDTH = 240;
-    const COLLAPSED_DRAWER_WIDTH = 85;
+    const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+    const { user } = useAuth();
+    const { openDrawer, setOpenDrawer, DRAWER_WIDTH, COLLAPSED_DRAWER_WIDTH } = useThemeMode();
 
     if (!user) return <Navigate to="/login" replace />;
 
-    return (
-        <Box component="div" sx={{ display: "flex", position: "relative" }}>
-            <DashboardSidebar
-                drawerWidth={DRAWER_WIDTH}
-                collapsedDrawerWidth={COLLAPSED_DRAWER_WIDTH}
-                openDrawer={openDrawer}
-                theme={theme}
-            />
+    if (isMobile)
+        return (
             <Box
-                component="div"
                 sx={{
-                    flexGrow: 1,
-                    position: "absolute",
-                    left: 0,
-                    right: 0,
-                    ml: openDrawer ? `${DRAWER_WIDTH}px` : `${COLLAPSED_DRAWER_WIDTH}px`,
-                    transition: theme.transitions.create("margin-left", {
-                        easing: theme.transitions.easing.sharp,
-                        duration: theme.transitions.duration.standard,
-                    }),
+                    minHeight: "100vh",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
                 }}
             >
-                <DashboardNavbar
+                <Typography>Best viewed in tablets / laptops / desktops</Typography>
+            </Box>
+        );
+
+    return (
+        <DashboardProvider>
+            <Box component="div" sx={{ display: "flex", height: "100vh", overflow: "hidden" }}>
+                <DashboardSidebar
                     drawerWidth={DRAWER_WIDTH}
                     collapsedDrawerWidth={COLLAPSED_DRAWER_WIDTH}
                     openDrawer={openDrawer}
@@ -50,22 +48,34 @@ const DashboardLayout = () => {
                 />
 
                 <Box
-                    component="main"
-                    className="content"
+                    component="div"
                     sx={{
-                        minHeight: "100vh",
-                        p: 2,
-                        transition: theme.transitions.create("padding", {
+                        minHeight: `${theme.mixins.toolbar.minHeight}px`,
+                        width: "100%",
+                        display: "flex",
+                        flexDirection: "column",
+                        ml: openDrawer ? `${DRAWER_WIDTH}px` : `${COLLAPSED_DRAWER_WIDTH}px`,
+                        transition: theme.transitions.create("margin-left", {
                             easing: theme.transitions.easing.sharp,
                             duration: theme.transitions.duration.standard,
                         }),
                     }}
                 >
+                    <DashboardNavbar
+                        drawerWidth={DRAWER_WIDTH}
+                        collapsedDrawerWidth={COLLAPSED_DRAWER_WIDTH}
+                        openDrawer={openDrawer}
+                        theme={theme}
+                    />
+
                     <ToolbarSpacer />
-                    <Outlet />
+                    <ToolbarSpacer />
+                    <Box component="main" className="content" sx={{ flex: 1, overflow: "auto" }}>
+                        <Outlet />
+                    </Box>
                 </Box>
             </Box>
-        </Box>
+        </DashboardProvider>
     );
 };
 

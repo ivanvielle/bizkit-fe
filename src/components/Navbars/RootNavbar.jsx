@@ -9,7 +9,6 @@ import {
     IconButton,
     Drawer,
     Box,
-    Tooltip,
     useTheme,
 } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";

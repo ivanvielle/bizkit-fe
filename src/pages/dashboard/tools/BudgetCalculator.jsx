@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 
 // components
-import BudgetCalculatorForm from "../../../features/dashboard/tools/BudgetCalculatorForm";
+import BudgetCalculatorForm from "../../../components/Forms/BudgetCalculatorForm";
 
 // hooks
 import useTitle from "../../../hooks/useTitle";

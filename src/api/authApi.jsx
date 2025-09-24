@@ -37,6 +37,21 @@ const login = async ({ email, password }) => {
     }
 };
 
+const fbLogin = async () => {
+    try {
+        const response = await fetch(`${BASE_URL}/auth/facebook-auth`, {
+            method: "GET",
+            credentials: "include",
+        });
+
+        const data = await response.json();
+
+        return { status: response.status, data };
+    } catch (err) {
+        throw new Error(err);
+    }
+};
+
 const logout = async () => {
     try {
         const response = await fetch(`${BASE_URL}/auth/logout`, {
@@ -66,4 +81,4 @@ const getMe = async () => {
         throw new Error(err);
     }
 };
-export { register, login, logout, getMe };
+export { register, login, logout, getMe, fbLogin };

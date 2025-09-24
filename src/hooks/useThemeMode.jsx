@@ -1,7 +1,7 @@
 import { useContext } from "react";
 
 // context
-import ThemeContext from "../contexts/ThemeContext";
+import { ThemeContext } from "../contexts/ThemeContextProvider";
 
 // not to be confused from useTheme of Mui
 const useThemeMode = () => {

@@ -49,7 +49,7 @@ const LogoutButton = () => {
     return (
         <Box>
             {/* logout button */}
-            <Tooltip title="Logout">
+            <Tooltip title="Logout" placement="right">
                 <IconButton color="error" onClick={handleLogout}>
                     <PowerSettingsNewIcon fontSize="medium" />
                 </IconButton>

@@ -1,257 +1,236 @@
-import { useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useLocation, NavLink } from "react-router-dom";
 import {
     Box,
     Collapse,
     Divider,
     Drawer,
+    Button,
     List,
     ListItem,
     ListItemButton,
     ListItemIcon,
     ListItemText,
     Tooltip,
+    IconButton,
+    Typography,
 } from "@mui/material";
 
+// components
+import Brand from "../../Links/Brand";
+import ProfileIcon from "../../Buttons/ProfileIcon";
+import SidebarToggleButton from "../../Buttons/SidebarToggleButton";
+import LogoutButton from "../../Buttons/LogoutButton";
+
 // icons
-import SpaceDashboardIcon from "@mui/icons-material/SpaceDashboard";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 // dashboard
 import DashboardIcon from "@mui/icons-material/Dashboard";
-// ecommerce
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-// properties
-import HomeWorkIcon from "@mui/icons-material/HomeWork";
-import RealEstateAgentIcon from "@mui/icons-material/RealEstateAgent";
-// stores
+// shops
 import StoreIcon from "@mui/icons-material/Store";
 // investments
+// properties
+import HomeWorkIcon from "@mui/icons-material/HomeWork";
 import SavingsIcon from "@mui/icons-material/Savings";
-import PieChartIcon from "@mui/icons-material/PieChart";
 import AreaChartIcon from "@mui/icons-material/AreaChart";
 import AnalyticsIcon from "@mui/icons-material/Analytics";
-// users
-import PeopleIcon from "@mui/icons-material/People";
-import BadgeIcon from "@mui/icons-material/Badge";
 // tools
 import HandymanIcon from "@mui/icons-material/Handyman";
 import CalculateIcon from "@mui/icons-material/Calculate";
 import TextSnippetIcon from "@mui/icons-material/TextSnippet";
 import FolderZipIcon from "@mui/icons-material/FolderZip";
 
-// components
-import Brand from "../../Links/Brand";
-import ProfileIcon from "../../Buttons/ProfileIcon";
+// dashboard menu
+const dashboardMenu = [
+    {
+        title: "Overview",
+        destination: "/dashboard",
+        icon: <DashboardIcon />,
+    },
+];
 
-// hooks
-import LogoutButton from "../../Buttons/LogoutButton";
+// shop menu
+const shopMenu = [
+    {
+        title: "Overview",
+        destination: "shops",
+        icon: <DashboardIcon />,
+    },
+    {
+        title: "Orders",
+        destination: "shops/orders",
+        icon: <FolderZipIcon />,
+    },
+    {
+        title: "Customers",
+        destination: "shops/customers",
+        icon: <FolderZipIcon />,
+    },
+    {
+        title: "Employees",
+        destination: "shops/employees",
+        icon: <FolderZipIcon />,
+    },
+    {
+        title: "Inventory",
+        destination: "shops/inventory",
+        icon: <FolderZipIcon />,
+    },
+    {
+        title: "Warehouse",
+        destination: "shops/warehouse",
+        icon: <FolderZipIcon />,
+    },
+];
 
-const DashboardSidebar = ({ drawerWidth, collapsedDrawerWidth, openDrawer, theme }) => {
-    const [submenuOpen, setSubmenuOpen] = useState([]);
+// properties menu
+const propertiesMenu = [
+    {
+        title: "Overview",
+        destination: "properties",
+        icon: <DashboardIcon />,
+    },
+    {
+        title: "Rentals",
+        destination: "properties/rentals",
+        icon: <HomeWorkIcon />,
+    },
+    {
+        title: "Owned",
+        destination: "properties/owned",
+        icon: <HomeWorkIcon />,
+    },
+    {
+        title: "Tenants",
+        destination: "properties/tenants",
+        icon: <HomeWorkIcon />,
+    },
+];
 
-    const toggleSubmenu = menuTitle => {
-        setSubmenuOpen(prev => ({
-            ...prev,
-            [menuTitle]: !prev[menuTitle],
-        }));
-    };
+// investments menu
+const investmentsMenu = [
+    {
+        title: "Overview",
+        destination: "investments",
+        icon: <DashboardIcon />,
+    },
+    {
+        title: "Stocks",
+        destination: "investments/stocks",
+        icon: <AreaChartIcon />,
+    },
+    {
+        title: "Funds",
+        destination: "investments/funds",
+        icon: <AnalyticsIcon />,
+    },
+];
 
-    // submenus
-    // investments
-    const investmentSubMenu = [
-        {
-            title: "Stocks",
-            destination: "investments/stocks",
-            icon: <AreaChartIcon fontSize="small" />,
-        },
-        {
-            title: "Funds",
-            destination: "investments/funds",
-            icon: <AnalyticsIcon fontSize="small" />,
-        },
-    ];
-    // tools
-    const toolsSubMenu = [
-        {
-            title: "Notes",
-            destination: "tools/notes",
-            icon: <TextSnippetIcon />,
-        },
-        {
-            title: "Files",
-            destination: "tools/files",
-            icon: <FolderZipIcon />,
-        },
-        {
-            title: "Budget Calculator",
-            destination: "tools/budget-calculator",
-            icon: <CalculateIcon fontSize="small" />,
-        },
-    ];
+// tools menu
+const toolsMenu = [
+    {
+        title: "Overview",
+        destination: "tools",
+        icon: <HandymanIcon />,
+    },
+    {
+        title: "Notes",
+        destination: "tools/notes",
+        icon: <TextSnippetIcon />,
+    },
+    {
+        title: "Files",
+        destination: "tools/files",
+        icon: <TextSnippetIcon />,
+    },
+    {
+        title: "Budget Calculator",
+        destination: "tools/budget-calculator",
+        icon: <CalculateIcon />,
+    },
+    {
+        title: "Gold Calculator",
+        destination: "tools/gold-calculator",
+        icon: <CalculateIcon />,
+    },
+];
 
-    // menu
-    const menu = [
-        {
-            title: "Dashboard",
-            destination: "/dashboard",
-            icon: <DashboardIcon fontSize="small" />,
-            expandable: false,
-            subMenu: null,
-        },
-        {
-            title: "E-commerce",
-            destination: "ecommerce",
-            icon: <ShoppingCartIcon fontSize="small" />,
-            expandable: false,
-            subMenu: null,
-        },
-        {
-            title: "Property",
-            destination: "properties",
-            icon: <HomeWorkIcon fontSize="small" />,
-            expandable: false,
-            subMenu: null,
-        },
-        {
-            title: "Stores",
-            destination: null,
-            icon: <StoreIcon fontSize="small" />,
-            expandable: false,
-            subMenu: null,
-        },
-        {
-            title: "Investment",
-            destination: null,
-            icon: <SavingsIcon fontSize="small" />,
-            expandable: true,
-            expandMoreIcon: <ExpandMore fontSize="small" />,
-            expandLessIcon: <ExpandLess fontSize="small" />,
-            subMenu: investmentSubMenu,
-        },
-        {
-            title: "Tools",
-            destination: null,
-            icon: <HandymanIcon fontSize="small" />,
-            expandable: true,
-            expandMoreIcon: <ExpandMore fontSize="small" />,
-            expandLessIcon: <ExpandLess fontSize="small" />,
-            subMenu: toolsSubMenu,
-        },
-    ];
+const DashboardSidebar = ({
+    drawerWidth,
+    collapsedDrawerWidth,
+    openDrawer,
+    setOpenDrawer,
+    theme,
+}) => {
+    const { pathname } = useLocation();
 
-    // render submenu
-    const renderSubMenu = subMenu => {
-        if (!subMenu) return null;
-        return subMenu.map(sM => (
-            <Tooltip key={sM.title} title={!openDrawer ? sM.title : ""} placement="right">
-                <ListItem disableGutters sx={{ display: "block" }}>
-                    <ListItemButton
-                        component={RouterLink}
+    const renderSubMenu = () => {
+        const firstPathSegment = pathname.split("/")[1];
+        const secondPathSegment = pathname.split("/")[2];
+        const thirdPathSegment = pathname.split("/")[3];
+
+        let subMenu;
+
+        switch (secondPathSegment) {
+            case "shops":
+                subMenu = shopMenu;
+                break;
+            case "properties":
+                subMenu = propertiesMenu;
+                break;
+            case "investments":
+                subMenu = investmentsMenu;
+                break;
+            case "tools":
+                subMenu = toolsMenu;
+                break;
+            default:
+                subMenu = dashboardMenu;
+                break;
+        }
+
+        return subMenu.map(sM => {
+            return (
+                <Tooltip key={sM.title} title={openDrawer ? null : sM.title} placement="right">
+                    <Button
+                        component={NavLink}
                         to={sM.destination}
-                        sx={{
-                            pl: openDrawer ? 4 : 2,
-                            minHeight: 40,
-                            justifyContent: openDrawer ? "flex-start" : "center",
-                            transition: theme =>
-                                theme.transitions.create(["padding", "justify-content"], {
-                                    duration: theme.transitions.duration.shortest,
-                                }),
-                        }}
+                        end
+                        variant="text"
+                        size="large"
+                        startIcon={sM.icon}
+                        style={({ isActive }) => ({
+                            justifyContent: "flex-start",
+                            textAlign: "left",
+                            width: "100%",
+                            color: isActive ? "green" : "gray",
+                        })}
                     >
-                        <ListItemIcon
-                            sx={{
-                                minWidth: openDrawer ? 36 : "auto",
-                                mr: openDrawer ? 1 : 0,
-                                justifyContent: "center",
-                            }}
-                        >
-                            {sM.icon}
-                        </ListItemIcon>
-
-                        {/* show text only when drawer is open */}
-                        {openDrawer && (
-                            <ListItemText
-                                primary={sM.title}
-                                slotProps={{ primary: { sx: { fontSize: 13 } } }}
-                            />
-                        )}
-                    </ListItemButton>
-                </ListItem>
-            </Tooltip>
-        ));
+                        {openDrawer && sM.title}
+                    </Button>
+                </Tooltip>
+            );
+        });
     };
-
-    // render menu
-    const renderMenu = menu.map(m => (
-        <List
-            key={m.title}
-            sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "stretch",
-            }}
-        >
-            <Tooltip title={!openDrawer ? m.title : ""} placement="right">
-                <ListItemButton
-                    onClick={m.expandable ? () => toggleSubmenu(m.title) : undefined}
-                    component={!m.expandable ? RouterLink : "div"}
-                    {...(!m.expandable ? { to: m.destination } : {})}
-                    sx={{
-                        minHeight: 48,
-                        width: "100%",
-                        px: openDrawer ? 2 : 1,
-                        justifyContent: openDrawer ? "space-between" : "center",
-                        alignItems: "center",
-                        transition: theme =>
-                            theme.transitions.create(["padding", "justify-content"], {
-                                duration: theme.transitions.duration.shortest,
-                            }),
-                    }}
-                >
-                    <ListItemIcon
-                        sx={{
-                            minWidth: openDrawer ? 40 : "auto",
-                            mr: openDrawer ? 1 : 0,
-                            justifyContent: "center",
-                        }}
-                    >
-                        {m.icon}
-                    </ListItemIcon>
-
-                    {/* show text only when drawer is open */}
-                    {openDrawer && (
-                        <ListItemText primary={m.title} sx={{ fontSize: 14, fontWeight: 500 }} />
-                    )}
-
-                    {/* expand and collapse icons for submenu */}
-                    {m.expandable && (submenuOpen[m.title] ? m.expandLessIcon : m.expandMoreIcon)}
-                </ListItemButton>
-            </Tooltip>
-
-            <Collapse in={submenuOpen[m.title]} timeout="auto" sx={{ width: "100%" }} unmountOnExit>
-                {renderSubMenu(m.subMenu)}
-            </Collapse>
-        </List>
-    ));
 
     return (
         <Drawer
             anchor="left"
             variant="permanent"
             sx={{
-                width: openDrawer ? drawerWidth : collapsedDrawerWidth,
                 flexShrink: 0,
                 whiteSpace: "nowrap",
                 "& .MuiDrawer-paper": {
-                    py: 1.3,
-                    boxSizing: "border-box",
+                    height: "100vh",
+                    overflow: "hidden",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
                     width: openDrawer ? drawerWidth : collapsedDrawerWidth,
                     transition: theme.transitions.create("all", {
                         easing: theme.transitions.easing.sharp,
                         duration: theme.transitions.duration.standard,
                     }),
-                    overflow: "hidden",
                 },
             }}
         >
@@ -259,13 +238,8 @@ const DashboardSidebar = ({ drawerWidth, collapsedDrawerWidth, openDrawer, theme
             <Box
                 component="div"
                 sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    transition: theme.transitions.create("all", {
-                        easing: theme.transitions.easing.sharp,
-                        duration: theme.transitions.duration.standard,
-                    }),
+                    p: 2,
+                    textAlign: "center",
                 }}
             >
                 <Brand brand={openDrawer ? "BizKit" : "B"} destination="/dashboard" />
@@ -273,35 +247,39 @@ const DashboardSidebar = ({ drawerWidth, collapsedDrawerWidth, openDrawer, theme
 
             <Divider />
 
-            {/* menu */}
+            {/* content menu */}
+            <Box
+                sx={{
+                    flex: 1,
+                    p: 2,
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 2,
+                }}
+            >
+                {renderSubMenu()}
+            </Box>
+
+            <Divider />
+
             <Box
                 component="div"
                 sx={{
-                    flex: 1,
+                    py: 2,
                     display: "flex",
                     flexDirection: "column",
+                    justifyContent: "space-evenly",
+                    alignItems: "center",
+                    gap: 2,
                     transition: theme.transitions.create("all", {
                         easing: theme.transitions.easing.sharp,
                         duration: theme.transitions.duration.standard,
                     }),
                 }}
             >
-                {renderMenu}
-            </Box>
-
-            <Divider />
-            {/* auth actions */}
-            <Box
-                component="div"
-                sx={{
-                    p: 2,
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    gap: 2,
-                }}
-            >
+                {/* expand / collapse sidebar button */}
+                <SidebarToggleButton openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} />
+                {/* auth actions */}
                 <ProfileIcon />
                 <LogoutButton />
             </Box>

@@ -1,13 +1,15 @@
-import { Box, CssBaseline } from "@mui/material";
+import { Box, CssBaseline, useTheme } from "@mui/material";
 
 // providers
-import AuthProvider from "./providers/AuthProvider";
-import ThemeContextProvider from "./providers/ThemeContextProvider";
+import { AuthProvider } from "./contexts/AuthContextProvider";
+import { ThemeContextProvider } from "./contexts/ThemeContextProvider";
 
 // routes
 import AppRouter from "./routes/AppRouter";
 
 function App() {
+    const theme = useTheme();
+
     return (
         <AuthProvider>
             <ThemeContextProvider>

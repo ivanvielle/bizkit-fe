@@ -91,7 +91,7 @@ const LoginForm = ({ colors }) => {
                     autoComplete="false"
                     variant="standard"
                     type="text"
-                    label="Email"
+                    label="Email / Username"
                     value={email}
                     onChange={e => setEmail(e.target.value)}
                 />
@@ -176,7 +176,6 @@ const LoginForm = ({ colors }) => {
             <Snackbar
                 open={openSnackbar}
                 onClose={handleSnackbar}
-                autoHideDuration={1500}
                 anchorOrigin={{ vertical: "top", horizontal: "center" }}
             >
                 <Alert onClose={handleSnackbar} severity={alertSeverity}>

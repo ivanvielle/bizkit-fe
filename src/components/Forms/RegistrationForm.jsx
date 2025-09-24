@@ -15,9 +15,12 @@ import {
 // icons
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import FacebookIcon from "@mui/icons-material/Facebook";
 
 // api
-import { register } from "../../api/authApi";
+import { register, fbLogin } from "../../api/authApi";
+
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const RegistrationForm = ({ colors }) => {
     const navigate = useNavigate();
@@ -65,9 +68,17 @@ const RegistrationForm = ({ colors }) => {
             setAlertSeverity("success");
             setSnackbarMessage(result.data.message);
             setOpenSnackbar(true);
+
+            setTimeout(() => {
+                navigate("/login", { replace: true });
+            }, 3000);
         }
 
         setLoading(false);
+    };
+
+    const handleFbLogin = async e => {
+        window.location.href = `${BASE_URL}/auth/facebook-auth`;
     };
 
     return (
@@ -210,10 +221,13 @@ const RegistrationForm = ({ colors }) => {
                 Register
             </Button>
 
+            <IconButton onClick={handleFbLogin}>
+                <FacebookIcon />
+            </IconButton>
+
             <Snackbar
                 open={openSnackbar}
                 onClose={handleSnackbar}
-                autoHideDuration={3000}
                 anchorOrigin={{ vertical: "top", horizontal: "center" }}
             >
                 <Alert onClose={handleSnackbar} severity={alertSeverity}>

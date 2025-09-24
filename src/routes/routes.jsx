@@ -6,9 +6,10 @@ import RootLayout from "../layouts/RootLayout";
 import AuthLayout from "../layouts/AuthLayout";
 import DashboardLayout from "../layouts/DashboardLayout";
 // dashboard layouts
-import EcommerceLayout from "../layouts/dashboard/EcommerceLayout";
+import ShopsLayout from "../layouts/dashboard/ShopsLayout";
 import PropertiesLayout from "../layouts/dashboard/PropertiesLayout";
 import ToolsLayout from "../layouts/dashboard/ToolsLayout";
+import InvestmentsLayout from "../layouts/dashboard/InvestmentsLayout";
 
 // pages - root
 const Welcome = lazyWrapper(() => import("../pages/root/WelcomePage"));
@@ -24,29 +25,8 @@ const ForgotPassword = lazyWrapper(() => import("../pages/auth/ForgotPasswordPag
 // pages - dashboard
 const Dashboard = lazyWrapper(() => import("../pages/dashboard/DashboardPage"));
 
-// ecommerce
-const EcommerceOverview = lazyWrapper(() =>
-    import("../pages/dashboard/ecommerce/EcommerceOverviewPage")
-);
-const EcommerceShops = lazyWrapper(() => import("../pages/dashboard/ecommerce/EcommerceShopsPage"));
-const EcommerceOrders = lazyWrapper(() =>
-    import("../pages/dashboard/ecommerce/EcommerceOrdersPage")
-);
-const EcommerceInventory = lazyWrapper(() =>
-    import("../pages/dashboard/ecommerce/EcommerceInventoryPage")
-);
-const EcommerceWarehouse = lazyWrapper(() =>
-    import("../pages/dashboard/ecommerce/EcommerceWarehousePage")
-);
-const EcommerceCustomers = lazyWrapper(() =>
-    import("../pages/dashboard/ecommerce/EcommerceCustomersPage")
-);
-const EcommerceEmployees = lazyWrapper(() =>
-    import("../pages/dashboard/ecommerce/EcommerceEmployeesPage")
-);
-const EcommercePayroll = lazyWrapper(() =>
-    import("../pages/dashboard/ecommerce/EcommercePayrollPage")
-);
+// shops
+const ShopsOverview = lazyWrapper(() => import("../pages/dashboard/shops/ShopsOverviewPage"));
 
 // properties
 const PropertiesOverview = lazyWrapper(() =>
@@ -64,6 +44,7 @@ const PropertyTenants = lazyWrapper(() =>
 const PropertyEmployees = lazyWrapper(() =>
     import("../pages/dashboard/properties/PropertyEmployeesPage")
 );
+const PropertyPage = lazyWrapper(() => import("../pages/dashboard/properties/PropertyPage"));
 
 // investments
 const InvestmentsOverview = lazyWrapper(() =>
@@ -80,6 +61,7 @@ const FundsOverview = lazyWrapper(() =>
 const Notes = lazyWrapper(() => import("../pages/dashboard/tools/Notes"));
 const Files = lazyWrapper(() => import("../pages/dashboard/tools/Files"));
 const BudgetCalculator = lazyWrapper(() => import("../pages/dashboard/tools/BudgetCalculator"));
+const GoldCalculator = lazyWrapper(() => import("../pages/dashboard/tools/GoldCalculator"));
 
 const routes = [
     // root
@@ -132,42 +114,14 @@ const routes = [
                 index: true,
                 element: <Dashboard />,
             },
-            // ecommerce
+            // shops
             {
-                path: "ecommerce",
-                element: <EcommerceLayout />,
+                path: "shops",
+                element: <ShopsLayout />,
                 children: [
                     {
                         index: true,
-                        element: <EcommerceOverview />,
-                    },
-                    {
-                        path: "shops",
-                        element: <EcommerceShops />,
-                    },
-                    {
-                        path: "orders",
-                        element: <EcommerceOrders />,
-                    },
-                    {
-                        path: "inventory",
-                        element: <EcommerceInventory />,
-                    },
-                    {
-                        path: "warehouse",
-                        element: <EcommerceWarehouse />,
-                    },
-                    {
-                        path: "customers",
-                        element: <EcommerceCustomers />,
-                    },
-                    {
-                        path: "employees",
-                        element: <EcommerceEmployees />,
-                    },
-                    {
-                        path: "payroll",
-                        element: <EcommercePayroll />,
+                        element: <ShopsOverview />,
                     },
                 ],
             },
@@ -196,11 +150,16 @@ const routes = [
                         path: "employees",
                         element: <PropertyEmployees />,
                     },
+                    {
+                        path: ":id",
+                        element: <PropertyPage />,
+                    },
                 ],
             },
             // investments
             {
                 path: "investments",
+                element: <InvestmentsLayout />,
                 children: [
                     {
                         index: true,
@@ -244,6 +203,10 @@ const routes = [
                     {
                         path: "budget-calculator",
                         element: <BudgetCalculator />,
+                    },
+                    {
+                        path: "gold-calculator",
+                        element: <GoldCalculator />,
                     },
                 ],
             },
